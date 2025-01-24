@@ -3,7 +3,7 @@ config:
   # https://www.pulumi.com/docs/iac/concepts/config/#provider-configuration-options
   # https://www.pulumi.com/registry/packages/azuredevops/installation-configuration/#configuration-reference
   azuredevops:orgServiceUrl: https://dev.azure.com/company
-  pipelines:build_defs:
+  pipelines:build_defs:  # "pipelines" is the pulumi project name, see Pulumi.yaml
     # the iac_id is just use to set as the resource id in the IaC code,
     # once set, this iac_id should not change ever, otherwise, the ado build defineinition resource will destroy and re-create
     # you can generate this id by:

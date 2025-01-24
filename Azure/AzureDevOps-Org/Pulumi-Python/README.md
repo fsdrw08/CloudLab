@@ -3,8 +3,8 @@
 #### Init (create new) `pyproject.toml` config by poetry
 ```powershell
 # in current dir
-$projectName="pipelines"
-$description="IaC project to manage pipelines in this repo via IaC"
+$projectName="ADO-Org"
+$description="Manage Azure DevOps Organization in this repo via IaC"
 $author="WindomWU"
 poetry init --name $projectName `
     --description $description `
@@ -43,9 +43,9 @@ See [../../Day0/Bicep/README.md](../../Day0/Bicep/README.md)
 #### Prepare pulumi config
 update Pulumi.yaml to
 ```powershell
-$backendSchema="azblob"
-$saContainer="saContainer"
 $projectName="ADO-Org"
+$backendSchema="azblob"
+$saContainer="Pulumi-Backend"
 $description="Manage Azure DevOps Organization By IaC"
 $PulumiYaml=@"
 name: $($projectName)
@@ -85,7 +85,7 @@ ref:
 - https://www.pulumi.com/docs/iac/concepts/secrets/#azure-key-vault
 ```powershell
 # in current dir
-$stackName="ADO-Org-<orgName>"
+$stackName="orgName"
 $keyVaultName="keyVaultName"
 $keyName="keyName"
 $location="location"
@@ -139,4 +139,4 @@ pulumi import $type $iacId $defProjectName/$defId --stack $stackName
 ```
 
 ## Run pipeline to apply IaC
-- POC-Pulumi-ADO-EXT  : https://dev.azure.com/company/EOS/_build?definitionId=2648
+- POC-Pulumi-ADO-EXT  : https://dev.azure.com/company/ORG/_build?definitionId=2648

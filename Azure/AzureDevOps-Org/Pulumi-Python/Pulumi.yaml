@@ -1,10 +1,10 @@
-name: $($projectName)
+name: pipelines # $($projectName)
 # https://www.pulumi.com/docs/languages-sdks/python/
 runtime:
   name: python
   options:
     toolchain: poetry
-description: $description
+description: Manage ADO pipelines in this repo via IaC # $description
 # https://www.pulumi.com/docs/concepts/state/#logging-into-and-out-of-state-backends
 backend:
   url: $($backendSchema)://$($saContainer)/$($projectName)
