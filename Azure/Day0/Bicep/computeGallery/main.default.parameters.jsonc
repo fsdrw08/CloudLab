@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentName": {
+            "value": "Day0-compute-gallery",
+            "metadata": {
+                // subscription name
+                "subscriptionId": "subscriptionId_place_holder",
+                "resourceGroupName": "resourceGroupName_place_holder"
+            }
+        },
+        "gallery": {
+            "value": {
+                "name": "name_place_holder",
+                "location": "location_place_holder",
+                "imageDefinition": {
+                    "name": "ubuntu-adoagent",
+                    "properties": {
+                        "architecture": "x64",
+                        "identifier": {
+                            "offer": "adoagent",
+                            "publisher": "eos",
+                            "sku": "adoagent"
+                        },
+                        "osType": "Linux",
+                        "osState": "Generalized"
+                    }
+                    // "softDeletePolicy": {
+                    //     // Specifies the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. 
+                    //     // The object ID must be unique for the list of access policies. 
+                    //     // Get it by using Get-AzADUser or Get-AzADServicePrincipal cmdlets.
+                    //     // Team-EOS-Architecture-Optimisation
+                    //     "isSoftDeleteEnabled": "False"
+                    // }
+                }
+            }
+        }
+    }
+}

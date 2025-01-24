@@ -1,0 +1,36 @@
+config:
+  # provider level config
+  # https://www.pulumi.com/docs/iac/concepts/config/#provider-configuration-options
+  # https://www.pulumi.com/registry/packages/azuredevops/installation-configuration/#configuration-reference
+  azuredevops:orgServiceUrl: https://dev.azure.com/company
+  pipelines:build_defs:
+    # the iac_id is just use to set as the resource id in the IaC code,
+    # once set, this iac_id should not change ever, otherwise, the ado build defineinition resource will destroy and re-create
+    # you can generate this id by:
+    # powershell: new-guid
+    # linux shell: cat /proc/sys/kernel/random/uuid
+    - iac_id: 856052da-6f9b-4937-951e-5d38a8afdb97
+      build_def:
+        name: POC-Pulumi-ADO-EXT
+        path: \infrastructure\iac
+        repo:
+          project_name: DevOps
+          repo_name: iac
+          branch_name: refs/heads/master
+          yml_path: .pipelines/.azure-devops/invoke-pulumi.azure-pipeline.yml
+        variables:
+          - is_secret: true
+            name: AZDO_PERSONAL_ACCESS_TOKEN
+            secret_value:
+              secure: v1:GBOZ/2Rw4CygXSrr:XDzoVZDilMwqgmtiZlLCflvLvQs6mcCwZZkNsB9AyH7H8XQoNtFzkjb2f/oiYTmv6KjtXRE3P3W43ZJ5WB3YbT4ndjw=
+    - iac_id: 320655b8-a305-49c2-a64a-bda42678ec20
+      build_def:
+        name: apim
+        path: \infrastructure\iac
+        repo:
+          project_name: DevOps
+          repo_name: iac
+          branch_name: refs/heads/master
+          yml_path: projects/apim/azure-pipelines.yml
+  # project level config, this project names "pipelines"
+  pipelines:pipeline_project_name: EOS

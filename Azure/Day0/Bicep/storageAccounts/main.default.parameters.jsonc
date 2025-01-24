@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deploymentName": {
+            "value": "Day0-storage-account",
+            "metadata": {
+                // subscription name
+                "subscriptionId": "subscriptionId_place_holder",
+                "resourceGroupName": "resourceGroupName_place_holder"
+            }
+        },
+        "storageAccount": {
+            "value": {
+                "name": "name_place_holder",
+                "skuName": "Standard_LRS",
+                "containers": [
+                    "pulumistate"
+                ]
+            }
+        }
+    }
+}
