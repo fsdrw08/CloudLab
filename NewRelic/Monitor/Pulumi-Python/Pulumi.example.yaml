@@ -1,0 +1,113 @@
+secretsprovider: xxxxxxxxxxxxxxxxxxxxxxx
+encryptedkey: xxxxxxxxxxxxxxxxxxxx
+config:
+  newrelic:accountId:
+    secure: v1:Nrz+ZrR/YCR0RaNO:8Li7zWu1P820CIkMKdK/GxW9E6ullKg=
+  newrelic:apiKey:
+    secure: v1:s+nMCGY97iknhrdE:oAx5OJJPpfjCpVDqvCwkhkPApKxAxcnBT+0/kR2C6vOFbkqPF96es03FjIrW42Pd
+  nrCertMonitoring:scriptMonitor:
+    name: SRE_Monitor_Certificates-script_monitor
+    period: EVERY_DAY
+    status: ENABLED
+    locations_publics:
+      - AWS_AP_SOUTHEAST_2
+  nrCertMonitoring:oneDashboard:
+    name: SRE_Monitor_Certificates-dashboard
+    permissions: public_read_only
+    pages:
+      - name: SRE_Monitor_Certificates-dashboard_page
+        widget_tables:
+          - title: SRE_Monitor_Certificates-dashboard_page_widget
+            nrql_queries:
+              - query: >
+                  SELECT custom.expiringCerts,custom.nearlyExpiringCerts,custom.problemCerts,custom.goodCerts
+                  FROM SyntheticCheck WHERE entityGuid = '{}' SINCE 1 day ago
+            column: 6
+            row: 2
+            width: 8
+            height: 3
+            ignore_time_range: False
+
+  nrCertMonitoring:alertPolicy:
+    name: SRE_Monitor_Certificates-Alert_Policy
+    incident_preference: PER_CONDITION
+  nrCertMonitoring:nrqlAlertConditions:
+    - name: SRE_Monitor_Certificates-alert_condition_expiring_1D
+      nrql:
+        query: SELECT latest(custom.nearlyExpiringCertsLength) FROM SyntheticCheck WHERE entityGuid = '{}'
+      # warning:
+      critical:
+        threshold: 1
+        operator: above_or_equals
+        threshold_duration: 60
+        threshold_occurrences: AT_LEAST_ONCE
+      optional:
+        type: static
+        enabled: true
+    - name: SRE_Monitor_Certificates-alert_condition_expiring_30D
+      nrql:
+        query: SELECT latest(custom.expiringCertsLength) FROM SyntheticCheck WHERE entityGuid = '{}'
+      warning:
+        threshold: 1
+        operator: above_or_equals
+        threshold_duration: 60
+        threshold_occurrences: AT_LEAST_ONCE
+      # critical:
+      optional:
+        type: static
+        enabled: true
+  nrCertMonitoring:notificationChannels:
+    - name: SRE_Monitor_Certificates-notification_channel_slack
+      type: SLACK
+      product: IINT
+      # get from https://one.newrelic.com/alerts-ai/notify/destinations?account=2655893&duration=1800000&state=65e176d4-45a7-260a-b2e5-e5857089a6e3
+      destination_id: "3be2934e-3bbb-4427-a896-56ec5062bbbd"
+      properties:
+        - key: channelId
+          # https://registry.terraform.io/providers/newrelic/newrelic/latest/docs/resources/notification_channel#SLACK
+          # get by slack client channel
+          # certs-endpoint-monitoring
+          value: C05SWCS7T42
+    - name: SRE_Monitor_Certificates-notification_channel_pagerduty
+      type: PAGERDUTY_SERVICE_INTEGRATION
+      product: IINT
+      # get from https://one.newrelic.com/alerts/notify/destinations?account=2655893&duration=1800000&state=907c0042-01cb-2130-c1f9-f7d71814a558
+      destination_id: "00814e07-d4a2-4c26-a1f6-f31e0170d91a"
+      properties:
+        # ref for config of PagerDuty with service integration
+        # https://www.pulumi.com/registry/packages/newrelic/api-docs/notificationchannel/#pagerduty-with-service-integrationhttpsdocsnewreliccomdocsapisnerdgraphexamplesnerdgraph-api-notifications-channelspagerduty
+        - key: summary
+          value: "{{ annotations.title.[0] }}"
+  nrCertMonitoring:workflows:
+    - name: SRE_Monitor_Certificates-workflow_non_urgent_1
+      enabled: True
+      muting_rules_handling: "NOTIFY_ALL_ISSUES"
+      issues_filter:
+        name: cert_expiring_warning
+        type: FILTER
+        predicates:
+          - attribute: priority
+            operator: "EQUAL"
+            values:
+              - HIGH
+      destinations:
+        - channel_name: SRE_Monitor_Certificates-notification_channel_slack
+          notification_triggers:
+            - ACKNOWLEDGED
+            - ACTIVATED
+    - name: SRE_Monitor_Certificates-workflow_urgent_1
+      enabled: True
+      muting_rules_handling: "NOTIFY_ALL_ISSUES"
+      issues_filter:
+        name: cert_expiring_critical
+        type: FILTER
+        predicates:
+          - attribute: priority
+            operator: "EQUAL"
+            values:
+              - CRITICAL
+      destinations:
+        - channel_name: SRE_Monitor_Certificates-notification_channel_pagerduty
+          notification_triggers:
+            - ACKNOWLEDGED
+            - ACTIVATED

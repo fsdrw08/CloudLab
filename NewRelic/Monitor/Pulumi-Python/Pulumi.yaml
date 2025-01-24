@@ -1,0 +1,6 @@
+name: NRMonitor
+runtime:
+  name: python
+description: $description
+backend:
+  url: $($backendSchema)://$($saContainer)/$($projectName)
