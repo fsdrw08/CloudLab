@@ -1,0 +1,69 @@
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/trigger?view=azure-pipelines
+trigger: none
+
+stages:
+  - stage: Preview_IaC
+    displayName: Preview_IaC
+    jobs:
+      - job: Preview_IaC
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - checkout: self
+            fetchDepth: "1"
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.11" # string. Required. Version spec. Default: 3.x.
+          - script: |
+              curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
+            displayName: Install poetry binary
+          # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/python-script-v0?view=azure-pipelines
+          - script: |
+              poetry install
+            workingDirectory: src/pki
+            displayName: Install python project dependency
+          # https://www.pulumi.com/docs/using-pulumi/continuous-delivery/azure-devops/#sample-azure-pipelinesyml
+          # https://github.com/pulumi/pulumi-az-pipelines-task/blob/master/buildAndReleaseTask/task.json
+          - task: Pulumi@1
+            inputs:
+              loginArgs: file://.
+              command: "preview"
+              cwd: "src/pki"
+              stack: "default"
+              createStack: true
+  # https://learn.microsoft.com/en-us/azure/devops/pipelines/process/environments?view=azure-devops
+  - stage: Deploy_IaC
+    jobs:
+      - deployment: Deploy_IaC
+        displayName: Pulumi Up
+        pool:
+          vmImage: "ubuntu-latest"
+        environment:
+          name: IaC-approval
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                  fetchDepth: "1"
+                - task: UsePythonVersion@0
+                  inputs:
+                    versionSpec: "3.11" # string. Required. Version spec. Default: 3.x.
+                - script: |
+                    curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
+                  displayName: Install poetry binary
+                # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/python-script-v0?view=azure-pipelines
+                - script: |
+                    poetry install
+                  workingDirectory: src/pki
+                  displayName: Install python project dependency
+                # https://www.pulumi.com/docs/using-pulumi/continuous-delivery/azure-devops/#sample-azure-pipelinesyml
+                # https://github.com/pulumi/pulumi-az-pipelines-task/blob/master/buildAndReleaseTask/task.json
+                - task: Pulumi@1
+                  inputs:
+                    loginArgs: file://.
+                    command: "up"
+                    args: "--yes"
+                    cwd: "src/pki"
+                    stack: "default"
+                    createStack: true

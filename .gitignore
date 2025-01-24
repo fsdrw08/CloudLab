@@ -1,3 +1,6 @@
+# pulumi 
+.pulumi
+
 # Local .terraform directories
 **/.terraform/*
 

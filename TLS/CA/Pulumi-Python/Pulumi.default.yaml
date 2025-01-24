@@ -1,0 +1,83 @@
+encryptionsalt: v1:3y3obG5dTIg=:v1:qhZVv7gDjpXiDs4z:ycm7ssO0j2NKyLhM8SBA3CMJqL8nIQ==
+config:
+  pki:root_ca:
+    privateKey:
+      algorithm: RSA
+      rsa_bits: 2048
+    selfSignedCert:
+      subject:
+        common_name: "ComLab Root CA"
+        country: "CN"
+        locality: "Foshan"
+        organization: "ComLab"
+        organizational_unit: "Infra"
+        province: "GD"
+        street_address: []
+      validity_period_hours: 175296 # (365 * 24 * 20) + (24 * 4) # 20 years
+      allowed_uses:
+        - cert_signing
+        - crl_signing
+        - key_encipherment
+        - digital_signature
+        - server_auth
+        - client_auth
+
+  pki:int_ca:
+    privateKey:
+      algorithm: RSA
+      rsa_bits: 2048
+    cert:
+      subject:
+        common_name: "ComLab Intermediate CA1"
+        country: "CN"
+        locality: "Foshan"
+        organization: "ComLab"
+        organizational_unit: "Infra"
+        province: "GD"
+        street_address: []
+      validity_period_hours: 175296 # (365 * 24 * 20) + (24 * 4) # 20 years
+      allowed_uses:
+        - cert_signing
+        - crl_signing
+        - key_encipherment
+        - digital_signature
+        - server_auth
+        - client_auth
+
+  pki:certs:
+    - name: vyos
+      key:
+        algorithm: "RSA"
+        rsa_bits: 2048
+      request:
+        dns_names:
+          - "vyos-api.mgmt.comlab"
+        subject:
+          common_name: "vyos api"
+          organization: "ComLab"
+      sign:
+        validity_period_hours: 43800
+        allowed_uses:
+          - key_encipherment
+          - digital_signature
+          - server_auth
+    # - name: cockroach_node_1
+    #   key:
+    #     algorithm: "RSA"
+    #     rsa_bits: 2048
+    #   cert:
+    #     ip_addresses:
+    #       - 192.168.255.1
+    #       - 127.0.0.1
+    #     dns_names:
+    #       - localhost
+    #       - cockroach.mgmt.comlab
+    #     subject:
+    #       common_name: node
+    #       organization: ComLab
+    #     validity_period_hours: 43800
+    #     allowed_uses:
+    #       - key_encipherment
+    #       - digital_signature
+    #       - server_auth
+    #       - client_auth
