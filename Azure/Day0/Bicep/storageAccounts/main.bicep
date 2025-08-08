@@ -24,7 +24,7 @@ resource sa 'Microsoft.Storage/storageAccounts@2023-05-01' = {
 
     resource container 'containers' = [
       for item in storageAccount.containers: {
-        name: item
+        name: '${item}-${uniqueString(item)}'
       }
     ]
   }

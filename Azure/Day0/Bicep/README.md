@@ -1,5 +1,4 @@
-## create IaC related infra for EOS project
-ticket: [Setup cloud resources for IaC](https://company.atlassian.net/browse/xxxx)  
+## create IaC related infra for xxx project
 Create resource group in subscriptions: 
 - [Subscription](https://portal.azure.com/), 
 

@@ -15,7 +15,7 @@
                 "name": "name_place_holder",
                 "skuName": "Standard_LRS",
                 "containers": [
-                    "pulumistate"
+                    "tfstate"
                 ]
             }
         }
