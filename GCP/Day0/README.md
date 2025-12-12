@@ -78,10 +78,17 @@ foreach ($role in $roles) {
 
 ### Create a preview of the deploy
 ```powershell
-gcloud infra-manager previews create projects/$projectID/locations/us-central1/previews/quickstart-preview `
-    --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$projectID.iam.gserviceaccount.com `
+$repoDir=git rev-parse --show-toplevel
+$childPath="GCP/simple_autopilot_public"
+Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
+
+$serviceAccountName="sa-infra-manager"
+$projectID="xxx"
+$region="asia-east1"
+gcloud infra-manager previews create projects/$projectID/locations/$region/previews/quickstart-preview `
+    --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
     --git-source-repo=https://github.com/fsdrw08/CloudLab `
     --git-source-directory=GCP/simple_autopilot_public `
-    --git-source-ref=v42.0.0 `
-    --input-values=project_id=$projectID,region=$region,base_name=$base_name
+    --git-source-ref=main `
+    --inputs-file=terraform.tfvars
 ```

@@ -37,7 +37,7 @@ module "gke" {
   version = "~> 41.0"
 
   project_id                      = var.project_id
-  name                            = "${local.cluster_type}-autopilot-public-cluster"
+  name                            = "${local.cluster_type}-autopilot-public"
   regional                        = true
   region                          = var.region
   network                         = module.gcp-network.network_name
