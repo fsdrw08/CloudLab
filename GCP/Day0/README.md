@@ -41,6 +41,10 @@ gcloud services enable config.googleapis.com --project $projectID
 gcloud services enable cloudquotas.googleapis.com --project $projectID
 ```
 
+```powershell
+gcloud services enable cloudresourcemanager.googleapis.com --project $projectID
+```
+
 4. Set up IAM for infrastructure manager
 ```powershell
 $serviceAccountName="sa-infra-manager"
@@ -87,6 +91,25 @@ $projectID="xxx"
 $region="asia-east1"
 gcloud infra-manager previews create projects/$projectID/locations/$region/previews/quickstart-preview `
     --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
+    --git-source-repo=https://github.com/fsdrw08/CloudLab `
+    --git-source-directory=GCP/simple_autopilot_public `
+    --git-source-ref=main `
+    --inputs-file=terraform.tfvars
+```
+
+### Create a deploy of the preview
+```powershell
+$repoDir=git rev-parse --show-toplevel
+$childPath="GCP/simple_autopilot_public"
+Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
+
+$projectID="xxx"
+$region="asia-east1"
+$serviceAccountName="sa-infra-manager"
+
+gcloud infra-manager deployments apply projects/$projectID/locations/$region/deployments/quickstart-deployment `
+    --project=$projectID `
+    --service-account=projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
     --git-source-repo=https://github.com/fsdrw08/CloudLab `
     --git-source-directory=GCP/simple_autopilot_public `
     --git-source-ref=main `

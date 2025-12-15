@@ -20,6 +20,7 @@ module "gcp-network" {
 
   project_id   = var.project_id
   network_name = local.network_name
+  bgp_best_path_selection_mode = "STANDARD"
 
   subnets = [
     {
