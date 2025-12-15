@@ -115,3 +115,20 @@ gcloud infra-manager deployments apply projects/$projectID/locations/$region/dep
     --git-source-ref=main `
     --inputs-file=terraform.tfvars
 ```
+
+### To delete the deploy of the preview
+```powershell
+$projectID="xxx"
+$region="asia-east1"
+gcloud infra-manager deployments delete projects/$projectID/locations/$region/deployments/quickstart-deployment `
+    --project=$projectID
+```
+
+### Get GKE cluster credentials
+```powershell
+$projectID="xxx"
+$baseName="xxx"
+$region="asia-east1"
+$clusterName="$baseName-autopilot-public"
+gcloud container clusters get-credentials $clusterName --location=$region --project=$projectID
+```
