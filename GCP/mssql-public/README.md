@@ -33,11 +33,29 @@ $repoDir=git rev-parse --show-toplevel
 $childPath="GCP/mssql-public"
 Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
 
+$projectID="xxx"
 $serviceAccountName="sa-infra-manager"
+$region="asia-east1"
+gcloud infra-manager previews create projects/$projectID/locations/$region/previews/$($childPath.ToLower() -replace "/","-") `
+    --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
+    --git-source-repo=https://github.com/fsdrw08/CloudLab `
+    --git-source-directory=$($childPath) `
+    --git-source-ref=main `
+    --inputs-file=terraform.tfvars
+```
+
+### Create a deploy of the preview
+```powershell
+$repoDir=git rev-parse --show-toplevel
+$childPath="GCP/mssql-public"
+Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
+
 $projectID="xxx"
 $region="asia-east1"
-gcloud infra-manager previews create projects/$projectID/locations/$region/previews/quickstart-preview `
-    --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
+$serviceAccountName="sa-infra-manager"
+gcloud infra-manager deployments apply projects/$projectID/locations/$region/deployments/$($childPath.ToLower() -replace "/","-") `
+    --project=$projectID `
+    --service-account=projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
     --git-source-repo=https://github.com/fsdrw08/CloudLab `
     --git-source-directory=$($childPath) `
     --git-source-ref=main `

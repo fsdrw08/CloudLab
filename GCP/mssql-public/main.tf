@@ -18,6 +18,10 @@ resource "random_password" "password" {
   length = 10
 }
 
+data "google_compute_network" "network" {
+  name = var.vpc_name
+}
+
 module "mssql" {
   source  = "terraform-google-modules/sql-db/google//modules/mssql"
   version = "~> 26.0"
@@ -29,6 +33,13 @@ module "mssql" {
   user_password        = random_password.password.result
 
   tier = "db-custom-2-7680"
+  database_version = "SQLSERVER_2019_STANDARD"
+  region = var.region
+
+  ip_configuration = {
+    ipv4_enabled    = true
+    private_network = data.google_compute_network.network.self_link
+  }
 
   deletion_protection = false
 

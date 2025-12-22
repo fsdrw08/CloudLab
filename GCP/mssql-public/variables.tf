@@ -19,10 +19,19 @@ variable "project_id" {
   description = "The project to run tests against"
 }
 
+variable "region" {
+  type = string
+  default = "asia-east1"
+}
+
 variable "name" {
   type        = string
   description = "The name for Cloud SQL instance"
   default     = "tf-mssql-public"
+}
+
+variable "vpc_name" {
+  type = string
 }
 
 variable "sql_server_audit_config" {
