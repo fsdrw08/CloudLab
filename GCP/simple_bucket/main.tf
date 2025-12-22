@@ -2,7 +2,7 @@ resource "random_uuid" "uuid" {
 }
 
 resource "google_storage_bucket" "default" {
-  name          = "terraform-tfstate-${split("-", random_uuid.id.uuid)[0]}"
+  name          = "terraform-tfstate-${split("-", random_uuid.uuid.id)[0]}"
   project       = var.project_id
   force_destroy = false
   location      = "ASIA-EAST2"
