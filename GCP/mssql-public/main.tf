@@ -20,6 +20,7 @@ resource "random_password" "password" {
 
 data "google_compute_network" "network" {
   name = var.vpc_name
+  project = var.project_id
 }
 
 module "mssql" {

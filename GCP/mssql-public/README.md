@@ -44,6 +44,14 @@ gcloud infra-manager previews create projects/$projectID/locations/$region/previ
     --inputs-file=terraform.tfvars
 ```
 
+### Delete the preview
+```powershell
+$projectID="xxx"
+$region="asia-east1"
+gcloud infra-manager previews delete projects/$projectID/locations/$region/previews/$($childPath.ToLower() -replace "/","-") `
+    --project $projectID
+```
+
 ### Create a deploy of the preview
 ```powershell
 $repoDir=git rev-parse --show-toplevel
