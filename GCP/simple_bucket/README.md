@@ -36,7 +36,8 @@ gcloud infra-manager previews create projects/$projectID/locations/$region/previ
     --service-account projects/$projectID/serviceAccounts/$serviceAccountName@$($projectID).iam.gserviceaccount.com `
     --git-source-repo=https://github.com/fsdrw08/CloudLab `
     --git-source-directory=$($childPath) `
-    --git-source-ref=main 
+    --git-source-ref=main `
+    --inputs-file=terraform.tfvars
 ```
 
 ### Delete the preview
