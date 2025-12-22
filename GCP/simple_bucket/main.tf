@@ -1,5 +1,6 @@
 resource "google_storage_bucket" "default" {
   name          = "terraform-tfstate"
+  project       = var.project_id
   force_destroy = false
   location      = "ASIA-EAST2"
   storage_class = "STANDARD"
