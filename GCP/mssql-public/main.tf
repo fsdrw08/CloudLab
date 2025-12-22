@@ -23,7 +23,27 @@ data "google_compute_network" "network" {
   project = var.project_id
 }
 
+resource "google_compute_global_address" "private_ip_address" {
+  provider = google-beta
+
+  name          = "mssql-private-ip-address"
+  purpose       = "PRIVATE_SERVICE_CONNECT"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = data.google_compute_network.network.id
+  project       = var.project_id
+}
+
+resource "google_service_networking_connection" "private_vpc_connection" {
+  provider = google-beta
+
+  network                 = data.google_compute_network.network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
+}
+
 module "mssql" {
+  depends_on = [google_service_networking_connection.private_vpc_connection]
   source  = "terraform-google-modules/sql-db/google//modules/mssql"
   version = "~> 26.0"
 
