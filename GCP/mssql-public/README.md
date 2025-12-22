@@ -69,3 +69,11 @@ gcloud infra-manager deployments apply projects/$projectID/locations/$region/dep
     --git-source-ref=main `
     --inputs-file=terraform.tfvars
 ```
+
+### To delete the deploy of the preview
+```powershell
+$projectID="xxx"
+$region="asia-east1"
+gcloud infra-manager deployments delete projects/$projectID/locations/$region/deployments/$($childPath.ToLower() -replace "/","-") `
+    --project=$projectID
+```
