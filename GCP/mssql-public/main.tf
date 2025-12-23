@@ -53,7 +53,7 @@ module "mssql" {
   user_name            = "dbuser"
   user_password        = random_password.password.result
 
-  tier = "db-custom-2-7680"
+  tier = "db-custom-2-8192"
   database_version = "SQLSERVER_2019_STANDARD"
   region = var.region
 
