@@ -3,7 +3,7 @@ ref: https://github.com/terraform-google-modules/terraform-google-memorystore/tr
 ```powershell
 $proxy="http://127.0.0.1:7890"
 $env:HTTP_PROXY=$proxy;$env:HTTPS_PROXY=$proxy;$env:NO_PROXY="localhost,127.0.0.1"
-$projectId="jrg-hk-ph-olo-uat-002"
+$projectId=Read-Host -Prompt "Enter project id"
 gcloud services enable redis.googleapis.com --project $projectId
 ```
 
