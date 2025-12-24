@@ -4,4 +4,5 @@ resource "google_compute_network" "network" {
   auto_create_subnetworks = true
   mtu                     = 1460
   bgp_best_path_selection_mode = "STANDARD"
+  routing_mode = "REGIONAL"
 }
