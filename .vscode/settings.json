@@ -1,0 +1,6 @@
+{
+  "[hcl]": {
+    "editor.defaultFormatter": "fredwangwang.vscode-hcl-format"
+  },
+  "hclformat.levant_support": true,
+}
