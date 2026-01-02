@@ -59,6 +59,8 @@ gcloud infra-manager deployments apply projects/$projectID/locations/$region/dep
 
 ### To delete the deploy of the preview
 ```powershell
+$proxy="127.0.0.1:7890"
+$env:HTTPS_PROXY=$proxy;$env:HTTP_PROXY=$proxy
 $projectID="xxx"
 $region="asia-east1"
 gcloud infra-manager deployments delete projects/$projectID/locations/$region/deployments/quickstart-deployment `
