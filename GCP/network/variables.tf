@@ -3,5 +3,13 @@ variable "project_id" {
 }
 
 variable "vpc_name" {
-  type    = string
+  type = string
+}
+
+variable "subnets" {
+  type = list(object({
+    name          = string
+    region        = string
+    ip_cidr_range = string
+  }))
 }

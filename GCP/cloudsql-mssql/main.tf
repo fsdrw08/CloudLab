@@ -1,5 +1,4 @@
-
-resource "random_password" "password" {
+resource "random_password" "root_password" {
   length = 10
 }
 
@@ -8,23 +7,8 @@ data "google_compute_network" "network" {
   project = var.project_id
 }
 
-resource "google_compute_global_address" "private_ip_address" {
-  name          = "mssql-private-ip-address"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
-  prefix_length = 16
-  network       = data.google_compute_network.network.id
-  project       = var.project_id
-}
-
-resource "google_service_networking_connection" "private_vpc_connection" {
-  network                 = data.google_compute_network.network.id
-  service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
-}
-
 resource "google_sql_database_instance" "mssql_instance" {
-  name             = var.name
+  name             = var.sql_instance_name
   database_version = "SQLSERVER_2019_STANDARD"
   region           = var.region
   project          = var.project_id
@@ -38,8 +22,32 @@ resource "google_sql_database_instance" "mssql_instance" {
     }
 
   }
-  
-  deletion_protection = false
+  root_password = random_password.root_password.result
 
-  depends_on = [google_service_networking_connection.private_vpc_connection]
+  deletion_protection = false
+}
+
+resource "random_password" "additional_password" {
+  for_each = {
+    for user in var.sql_users : user.name => user
+  }
+
+  length  = 32
+  special = true
+
+  lifecycle {
+    ignore_changes = [
+      special, length
+    ]
+  }
+}
+
+resource "google_sql_user" "sql_user" {
+  for_each = {
+    for user in var.sql_users : user.name => user
+  }
+  name       = each.key
+  project    = var.project_id
+  instance   = google_sql_database_instance.mssql_instance.name
+  password   = coalesce(each.value.password, random_password.additional_password[each.key].result)
 }
