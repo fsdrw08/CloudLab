@@ -27,12 +27,14 @@ resource "google_service_networking_connection" "private_vpc_connection" {
 
 # required for memorystore private ip
 resource "google_compute_subnetwork" "subnetwork" {
-  for_each = var.subnets
+  for_each = {
+    for subnet in var.subnets : subnet.name => subnet
+  }
 
   project = var.project_id
-  network = data.google_compute_network.network.id
-  region  = "asia-east2"
+  network = google_compute_network.network.id
+  region  = each.value.region
 
-  name          = var.subnet.name
-  ip_cidr_range = var.subnet.cidr_range
+  name          = each.value.name
+  ip_cidr_range = each.value.ip_cidr_range
 }

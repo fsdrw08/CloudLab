@@ -1,11 +1,15 @@
 variable "project_id" {
-  type = string
+  type        = string
   description = "The GCP project ID where the Redis instance will be created."
 }
 
 variable "vpc_name" {
-  type = string
+  type        = string
   description = "The name of the VPC network to authorize the Redis instance to."
+}
+
+variable "subnet" {
+  type = string
 }
 
 variable "region" {
