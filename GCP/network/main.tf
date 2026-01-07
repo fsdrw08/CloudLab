@@ -38,3 +38,21 @@ resource "google_compute_subnetwork" "subnetwork" {
   name          = each.value.name
   ip_cidr_range = each.value.ip_cidr_range
 }
+
+# required for memorystore private ip, Role 2: Network Admin
+# the policy means allow gcp-memorystore service class to create a Private Service Connect connection between producer and consumer VPC networks.
+# https://docs.cloud.google.com/memorystore/docs/valkey/networking#networking_setup_guidance
+resource "google_network_connectivity_service_connection_policy" "service_connection_policy" {
+  for_each = {
+    for policy in var.psc_policies : policy.name => policy
+  }
+
+  project       = var.project_id
+  name          = each.value.name
+  location      = each.value.location
+  service_class = each.value.service_class
+  network       = google_compute_network.network.id
+  psc_config {
+    subnetworks = [google_compute_subnetwork.subnetwork[each.value.subnetworks[0]].id]
+  }
+}
