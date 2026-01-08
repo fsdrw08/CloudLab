@@ -3,23 +3,25 @@ variable "project_id" {
   description = "The project to run tests against"
 }
 
-variable "region" {
-  type = string
-  default = "asia-east1"
-}
-
 variable "vpc_name" {
   type = string
 }
 
-variable "sql_instance_name" {
+variable "subnet" {
+  type = object({
+    name   = string
+    region = string
+  })
+}
+
+variable "instance_name" {
   type        = string
   description = "The name for Cloud SQL instance"
 }
 
 variable "sql_users" {
   type = list(object({
-    name = string
+    name     = string
     password = optional(string, null)
   }))
 }
