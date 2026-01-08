@@ -9,14 +9,13 @@ variable "vpc_name" {
 }
 
 variable "subnet" {
-  type = string
+  type = object({
+    name   = string
+    region = string
+  })
 }
 
-variable "region" {
-  type = string
-}
-
-variable "name" {
+variable "instance_name" {
   type        = string
   description = "The name of the Redis instance."
 }
