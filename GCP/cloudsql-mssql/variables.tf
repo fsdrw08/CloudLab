@@ -14,9 +14,16 @@ variable "subnet" {
   })
 }
 
-variable "instance_name" {
-  type        = string
-  description = "The name for Cloud SQL instance"
+variable "sql_instance" {
+  type = object({
+    name             = string
+    database_version = string
+    tier             = string
+    authorized_networks = list(object({
+      name  = optional(string, null)
+      value = string
+    }))
+  })
 }
 
 variable "sql_users" {

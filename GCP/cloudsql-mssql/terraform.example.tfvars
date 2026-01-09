@@ -1,11 +1,18 @@
-# project_id = "<corp>-<region>-<band>-<business>-uat-002"
-# vpc_name = "vpc-<band><region><business>-uat-002"
-# subnet = {
-#   name   = "subnet-<band><region><business>-uat-002"
-#   region = "asia-east2"
-# }
+project_id = "<corp>-<region>-<band>-<business>-uat-002"
+vpc_name   = "vpc-<band><region><business>-uat-002"
+subnet = {
+  name   = "subnet-producer-<band><region><business>-uat-002"
+  region = "asia-east2"
+}
 
-# instance_name = "mssql-<band><region><business>-uat-002"
-# sql_user = [ {
-#   name = "dbuser"
-# } ]
+sql_instance = {
+  name             = "mssql-<band><region><business>-uat-002"
+  database_version = "SQLSERVER_2019_STANDARD"
+  tier             = "db-custom-2-8192"
+  authorized_networks = [
+    ewogICAgICB2YWx1ZSA9ICIxMy43NS40My45Ni8zMiIKICAgIH0sCiAgICB7CiAgICAgIHZhbHVlID0gIjEzLjc1LjEwNi4yMjQvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIxNC4xNjEuMC4xMDMvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIxOC4yMDUuMTc4LjE1LzMyIgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiMjAuMjM5LjcyLjY0LzMyIgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiMjMuMjEuMTE4LjE5MS8zMiIKICAgIH0sCiAgICB7CiAgICAgIHZhbHVlID0gIjM0LjIwNi4yMy4xNzMvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIzNS4xODYuMTQ2LjU1LzMyIgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiNTAuMTYuMjQ5LjkvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICI1Mi40LjE2MC4yMTQvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICI1Mi41NC44OS4yMzgvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICI1Mi4xNzUuMTYuMzMvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICI1Mi4xNzUuMjEuMjA5LzMyIgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiNTIuMTg0LjgzLjE5OS8zMiIKICAgIH0sCiAgICB7CiAgICAgIHZhbHVlID0gIjU0Ljg3LjguMzQvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICI1NC4xNTYuMzUuMjUxLzMyIgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiMTAzLjgyLjIwNS4xOTIvMjgiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIxMDMuMTQ2LjE2Ni4wLzI0IgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiMTA0LjIwOC43Ny4yMC8zMiIKICAgIH0sCiAgICB7CiAgICAgIHZhbHVlID0gIjE4My45MS4yMi4xMjYvMzIiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIxODMuOTEuMjMuMTkyLzI4IgogICAgfSwKICAgIHsKICAgICAgdmFsdWUgPSAiMjAzLjI5LjE2LjAvMjQiCiAgICB9LAogICAgewogICAgICB2YWx1ZSA9ICIyMDMuMjA1LjIxLjEzMi8zMiIKICAgIH0sCiAgICB7CiAgICAgIHZhbHVlID0gIjIwMy4yMDUuNTguMTQvMzIiCiAgICB9
+  ]
+}
+sql_users = [{
+  name = "dbuser"
+}]

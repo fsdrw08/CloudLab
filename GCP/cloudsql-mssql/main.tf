@@ -14,13 +14,13 @@ data "google_compute_subnetwork" "subnetwork" {
 }
 
 resource "google_sql_database_instance" "mssql_instance" {
-  name             = var.instance_name
-  database_version = "SQLSERVER_2019_STANDARD"
+  name             = var.sql_instance.name
+  database_version = var.sql_instance.database_version
   region           = data.google_compute_subnetwork.subnetwork.region
   project          = var.project_id
 
   settings {
-    tier = "db-custom-2-8192"
+    tier = var.sql_instance.tier
 
     ip_configuration {
       # ipv4 means public ip
@@ -37,6 +37,15 @@ resource "google_sql_database_instance" "mssql_instance" {
         psc_auto_connections {
           consumer_service_project_id = var.project_id
           consumer_network            = data.google_compute_network.network.id
+        }
+      }
+
+      dynamic "authorized_networks" {
+        for_each = var.sql_instance.authorized_networks
+        iterator = cidr
+        content {
+          name  = cidr.value.name
+          value = cidr.value.value
         }
       }
 
