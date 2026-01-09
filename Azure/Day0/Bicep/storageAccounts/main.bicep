@@ -1,4 +1,7 @@
 @description('Name of the deployment.')
+param companyName string
+
+@description('Name of the deployment.')
 param deploymentName string
 
 @description('object to config storage account')
@@ -24,12 +27,12 @@ resource sa 'Microsoft.Storage/storageAccounts@2023-05-01' = {
 
     resource container 'containers' = [
       for item in storageAccount.containers: {
-        name: '${item}-${uniqueString(item)}'
+        name: '${item}'
       }
     ]
   }
 }
 
-output deploymentURL string = 'https://portal.azure.com/#@company.com/resource${resourceId('Microsoft.Resources/deployments',deploymentName)}'
+output deploymentURL string = 'https://portal.azure.com/#@${companyName}/resource${resourceId('Microsoft.Resources/deployments',deploymentName)}'
 output deploymentOverviewURL string = 'https://portal.azure.com/#view/HubsExtension/DeploymentDetailsBlade/~/overview/id/${replace(resourceId('Microsoft.Resources/deployments',deploymentName),'/','%2F')}'
-output portalUrl string = 'https://portal.azure.com/#@company.com/resource${sa.id}'
+output portalUrl string = 'https://portal.azure.com/#@${companyName}/resource${sa.id}'

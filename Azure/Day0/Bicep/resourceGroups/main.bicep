@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+@description('Name of the deployment.')
+param companyName string
+
 @description('Object of the deployment.')
 param deploymentName string
 
@@ -24,12 +27,12 @@ resource rgs 'Microsoft.Resources/resourceGroups@2022-09-01' = [
   }
 ]
 
-output deploymentURL string = 'https://portal.azure.com/#@company.com/resource${resourceId('Microsoft.Resources/deployments',deploymentName)}'
+output deploymentURL string = 'https://portal.azure.com/#@${companyName}/resource${resourceId('Microsoft.Resources/deployments',deploymentName)}'
 output deploymentOverviewURL string = 'https://portal.azure.com/#view/HubsExtension/DeploymentDetailsBlade/~/overview/id/${replace(resourceId('Microsoft.Resources/deployments',deploymentName),'/','%2F')}'
-// output portalUrl string = 'https://portal.azure.com/#@company.com/resource${rg.id}'
+// output portalUrl string = 'https://portal.azure.com/#@${companyName}/resource${rg.id}'
 output portalUrls array = [
   for i in range(0, length(resourceGroups)): {
     name: rgs[i].name
-    portalUrl: 'https://portal.azure.com/#@company.com/resource${rgs[i].id}'
+    portalUrl: 'https://portal.azure.com/#@${companyName}/resource${rgs[i].id}'
   }
 ]

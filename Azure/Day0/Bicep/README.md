@@ -13,7 +13,11 @@ key vault name: `xxx`
 As a day0 project to provision IaC's related dependency infrastructure(e.g. storage account for IaC backend, key in keyvault for IaC backend encryption), seems that we cannot use other IaC tools for that, as we don't have any backend at the beginning (terraform/pulumi require a backend to storage infra's state). I try to use ARM template first, as ARM template doesn't require a backend to storage cloud resource's state, and I found that bicep can generate ARM template, so, why not use bicep directly?
 
 ## deploy process
-1. create resource group  
+0. Login to Azure
+```powershell
+az login
+```
+1. [create resource group](./resourceGroups)  
 
 ref: 
 - [Microsoft.Resources resourceGroups](https://learn.microsoft.com/en-us/azure/templates/microsoft.resources/resourcegroups?pivots=deployment-language-arm-template)
@@ -25,8 +29,12 @@ PIM up if required:
 
 ```powershell
 # default env
-$templateFile=".\resourceGroups\main.bicep"
-$paramsFile=".\resourceGroups\main.default.parameters.jsonc"
+$repoDir=git rev-parse --show-toplevel
+$childPath="Azure/Day0/Bicep/resourceGroups/"
+Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
+
+$templateFile="main.bicep"
+$paramsFile="main.parameters.jsonc"
 $parameters=(Get-Content -path $paramsFile | ConvertFrom-Json).parameters
 $deploymentName=$parameters.deploymentName.value
 $subscriptionId=$parameters.deploymentName.metadata.subscriptionId
@@ -68,7 +76,7 @@ az deployment sub create `
     --location $location
 ```
 
-2. create storage account  
+2. [create storage account](./storageAccounts/)  
 
 ref:
 - [Microsoft.Storage storageAccounts](https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts?pivots=deployment-language-bicep)
@@ -76,9 +84,12 @@ ref:
 
 
 ```powershell
+$repoDir=git rev-parse --show-toplevel
+$childPath="Azure/Day0/Bicep/storageAccounts/"
+Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
 # default
-$templateFile=".\storageAccounts\main.bicep"
-$paramsFile=".\storageAccounts\main.default.parameters.json"
+$templateFile="main.bicep"
+$paramsFile="main.parameters.jsonc"
 $parameters=(Get-Content -path $paramsFile | ConvertFrom-Json).parameters
 $deploymentName=$parameters.deploymentName.value
 $subscriptionId=$parameters.deploymentName.metadata.subscriptionId
