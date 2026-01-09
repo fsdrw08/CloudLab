@@ -58,5 +58,5 @@ gcloud projects add-iam-policy-binding $projectID `
     --role=roles/config.agent
 ```
 
-6. Create tf backend bucket by gcloud infra-manager  
-see [simple_bucket/README.md](./simple_bucket/README.md)
+### Create tf backend bucket by gcloud infra-manager  
+see [simple_bucket/README.md](../simple_bucket/README.md)
