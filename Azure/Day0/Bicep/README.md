@@ -1,3 +1,8 @@
+### Install az cli
+```powershell
+winget install Microsoft.AzureCLI
+```
+
 ## create IaC related infra for xxx project
 Create resource group in subscriptions: 
 - [Subscription](https://portal.azure.com/), 

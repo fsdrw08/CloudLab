@@ -11,6 +11,8 @@ $childPath="Azure/AppServicePlan"
 Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
 
 sudo pwsh.exe -c "terraform init";
+$subscriptionName=Read-Host " Please input your subscription name: <band><region>-uat-001"
+$env:ARM_SUBSCRIPTION_ID = (az account subscription list --only-show-errors --query "[?displayName=='$subscriptionName'].id" | ConvertFrom-Json | Select-Object -first 1) -split "/" | Select-Object -last 1
 terraform plan
 terraform apply
 ```

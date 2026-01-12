@@ -31,6 +31,7 @@ resource "google_sql_database_instance" "mssql_instance" {
       # this require private service connection to be enabled in VPC network
       # check GCP/network/terraform.example.tfvars
       # https://docs.cloud.google.com/sql/docs/sqlserver/private-ip?authuser=1&_gl=1*121b8t3*_ga*MTEzOTM5NjIzMS4xNzU2MTk3NTA1*_ga_WH2QY8WWF5*czE3Njc4NjA0NzAkbzQxJGcxJHQxNzY3ODY0OTEyJGozOCRsMCRoMA..#requirements_for_private_ip
+      # https://docs.cloud.google.com/sql/docs/sqlserver/configure-private-service-connect
       psc_config {
         psc_enabled               = true
         allowed_consumer_projects = [var.project_id]

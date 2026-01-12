@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-    google = {
+    azurerm = {
       source  = "hashicorp/azurerm"
       version = ">= 4.57.0"
     }
