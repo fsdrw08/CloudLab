@@ -1,14 +1,14 @@
 data "google_compute_network" "vpc" {
   project = var.project_id
-  name = var.vpc_name
+  name    = var.vpc_name
 }
 
 resource "google_compute_subnetwork" "subnet" {
   project = var.project_id
   network = data.google_compute_network.vpc.self_link
-  region = var.location
+  region  = var.location
 
-  name = var.subnet.name
+  name          = var.subnet.name
   ip_cidr_range = var.subnet.cidr_range
   dynamic "secondary_ip_range" {
     for_each = var.subnet.secondary_ip_range
@@ -21,15 +21,15 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_container_cluster" "gke" {
-  project = var.project_id
+  project  = var.project_id
   name     = var.gke_cluster_name
   location = var.location
 
   enable_autopilot = true
-  allow_net_admin = true
-  
+  allow_net_admin  = true
+
   networking_mode = "VPC_NATIVE"
-  
+
   network    = data.google_compute_network.vpc.self_link
   subnetwork = google_compute_subnetwork.subnet.self_link
 
@@ -56,4 +56,16 @@ resource "google_container_cluster" "gke" {
   }
 
   deletion_protection = false
+}
+
+resource "azurerm_dns_a_record" "rec_a" {
+  for_each = {
+    for record in var.dns_records : "${record.name}.${record.zone_name}" => record
+  }
+  resource_group_name = each.value.resource_group_name
+  zone_name           = each.value.zone_name
+  name                = each.value.name
+  ttl                 = each.value.ttl
+  records             = google_container_cluster.gke.
+
 }

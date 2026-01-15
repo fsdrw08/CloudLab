@@ -3,11 +3,11 @@ variable "project_id" {
 }
 
 variable "vpc_name" {
-  type    = string
+  type = string
 }
 
 variable "subnet" {
-  type =  object({
+  type = object({
     name       = string
     cidr_range = string
     secondary_ip_range = list(object({
@@ -23,4 +23,14 @@ variable "gke_cluster_name" {
 
 variable "location" {
   type = string
+}
+
+variable "dns_records" {
+  type = list(object({
+    resource_group_name = string
+    zone_name           = string
+    name                = string
+    ttl                 = number
+    records             = list(string)
+  }))
 }

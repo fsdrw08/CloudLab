@@ -7,7 +7,7 @@ az login
 ### run terraform
 ```powershell
 $repoDir=git rev-parse --show-toplevel
-$childPath="Azure/Jar/NATGateway"
+$childPath="Azure/Jar/VM-MSSQL"
 Set-Location -Path (Join-Path -Path $repoDir -ChildPath $childPath)
 
 sudo pwsh.exe -c "terraform init";
