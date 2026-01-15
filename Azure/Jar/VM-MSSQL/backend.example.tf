@@ -13,6 +13,6 @@
 #     container_name = "iac-tfstate"
 #     ## The name of the blob within the storage account container to write the state file to.
 #     ## Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
-#     key = "rg-<band><region><function>-uat-003"
+#     key = "vm-<band><region>d365-p01"
 #   }
 # }

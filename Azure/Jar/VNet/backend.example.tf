@@ -13,6 +13,6 @@
 #     container_name = "iac-tfstate"
 #     ## The name of the blob within the storage account container to write the state file to.
 #     ## Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
-#     key = "nsg-Azure_SharedServices_<region>"
+#     key = "vnet-Azure_SharedServices_<region>_Production_VNET"
 #   }
 # }
