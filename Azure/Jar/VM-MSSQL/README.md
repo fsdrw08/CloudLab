@@ -16,3 +16,26 @@ $env:ARM_SUBSCRIPTION_ID = (az account subscription list --only-show-errors --qu
 terraform plan
 terraform apply
 ```
+
+### Troubleshooting
+ref: https://github.com/hashicorp/terraform/issues/17046
+for below scenario
+```log
+Acquiring state lock. This may take a few moments...
+╷
+│ Error: Error acquiring the state lock
+│
+│ Error message: state blob is already locked
+│ blob metadata "terraformlockid" was empty
+│
+│ Terraform acquires a state lock to protect the state from being written
+│ by multiple users at the same time. Please resolve the issue above and try
+│ again. For most commands, you can disable locking with the "-lock=false"
+│ flag, but this is not recommended.
+```
+run below command to check the lock status
+```powershell
+az storage blob show --container-name <container-name> --name <blob-name> `
+--account-name <storage-account-name> --account-key <access-key> `
+--subscription <subscription-name>
+```
